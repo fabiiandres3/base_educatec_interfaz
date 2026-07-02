@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django_extensions',
     'apps.user',
     'apps.paneles',
+    'embed_video',
+    'apps.clases',
+    'apps.cursos',
+    'apps.tareas',
 ]
 
 MIDDLEWARE = [

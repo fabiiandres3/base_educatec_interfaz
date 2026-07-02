@@ -1,0 +1,314 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Detalle de Tarea{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- TAREA -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">{{ tarea.titulo }}</h3>
+        </div>
+
+        <div class="card-body">
+
+            {% if tarea.titulo %}
+            <div class="mb-3">
+                <strong>Título:</strong><br>
+                {{ tarea.titulo }}
+            </div>
+            {% endif %}
+
+            {% if tarea.descripcion %}
+            <div class="mb-3">
+                <strong>Descripción:</strong><br>
+                {{ tarea.descripcion }}
+            </div>
+            {% endif %}
+
+            {% if tarea.fecha_creacion %}
+            <div class="mb-3">
+                <strong>Fecha de creación:</strong><br>
+                {{ tarea.fecha_creacion }}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- IMÁGENES -->
+    {% if tarea.imagenes.all %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Imágenes</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                {% for imagen in tarea.imagenes.all %}
+                <div class="col-md-4 mb-3">
+                    <img src="{{ imagen.imagen.url }}" class="img-fluid rounded border shadow-sm">
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ARCHIVOS -->
+    {% if tarea.archivos.all %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Archivos adjuntos</h5>
+        </div>
+
+        <div class="card-body">
+
+            {% for archivo in tarea.archivos.all %}
+            <div class="mb-2">
+                <a href="{{ archivo.archivo.url }}" target="_blank" class="btn btn-outline-primary">
+                    📄 {{ archivo.archivo.name }}
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- VIDEOS -->
+    {% if tarea.video_set.all %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Videos</h5>
+        </div>
+
+        <div class="card-body">
+
+            {% for video in tarea.video_set.all %}
+
+            <div style="max-width: 600px;">
+                <div class="ratio ratio-16x9 mb-4">
+                    <iframe src="https://www.youtube.com/embed/{{ video.video|cut:'https://www.youtube.com/watch?v=' }}"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- PREGUNTAS -->
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">
+                    Preguntas ({{ tarea.preguntas.count }})
+                </h4>
+            </div>
+
+
+            <div class="card-body">
+
+                {% for pregunta in preguntas %}
+
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-body">
+
+                        <h4 class="mb-3">
+                            Pregunta {{ forloop.counter }}
+                        </h4>
+
+
+                        <!-- DATOS OCULTOS PARA EL SERVICIO -->
+
+                        <input type="hidden" name="pregunta_{{ forloop.counter0 }}" value="{{ pregunta.descripcion }}">
+
+                        <input type="hidden" name="tipo_{{ forloop.counter0 }}" value="{{ pregunta.tipo }}">
+
+
+                        <div class="mb-3">
+
+                            <strong>Enunciado:</strong>
+
+                            <p>
+                                {{ pregunta.descripcion }}
+                            </p>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <strong>Tipo:</strong>
+
+                            {{ pregunta.get_tipo_display }}
+
+                        </div>
+
+
+                        <div class="mb-4">
+
+                            <strong>Puntaje:</strong>
+
+                            {{ pregunta.puntaje }}
+
+                        </div>
+
+
+
+                        <!-- RESPUESTA TEXTO -->
+
+                        {% if pregunta.tipo == 'texto' %}
+
+                        {% if not pregunta.respondida %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-bold">
+                                Tu respuesta:
+                            </label>
+
+                            <textarea class="form-control" rows="4" name="respuesta_{{ forloop.counter0 }}"></textarea>
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="alert alert-success">
+                            Ya respondiste esta pregunta.
+                        </div>
+
+                        {% endif %}
+
+                        {% endif %}
+
+
+                        <!-- OPCIONES -->
+
+                        {% if pregunta.tipo == 'opcion' %}
+
+                        {% if not pregunta.respondida %}
+
+                        <div class="opciones-container">
+
+                            {% for opcion in pregunta.opciones.all %}
+
+                            <label class="opcion-item">
+
+                                <input type="radio" name="opcion_seleccionada_{{ forloop.parentloop.counter0 }}"
+                                    value="{{ opcion.id }}" class="opcion-check">
+
+                                <span>
+                                    {{ opcion.opcion }}
+                                </span>
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="alert alert-success">
+                            Ya respondiste esta pregunta.
+                        </div>
+
+                        {% endif %}
+
+                        {% endif %}
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+
+
+                <!-- BOTÓN SUBMIT -->
+
+                <div class="text-end mt-4">
+
+                    <button type="submit" class="btn btn-success">
+                        Enviar respuestas
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+
+    <div class="alert alert-info">
+        Nota actual:
+        <strong>{{ nota }}</strong>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="mt-4">
+
+        <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-warning">
+            Editar
+        </a>
+
+        <a href="{% url 'listar_tareas' %}" class="btn btn-secondary">
+            Volver
+        </a>
+
+    </div>
+
+</div>
+
+<style>
+    .opciones-container {
+        margin-top: 20px;
+    }
+
+    .opcion-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        width: 100%;
+
+        padding: 12px 15px;
+
+        margin-bottom: 2px;
+
+        background: #f8f9fa;
+
+        cursor: pointer;
+
+        transition: 0.2s;
+    }
+
+    .opcion-item:hover {
+        background: #e9ecef;
+    }
+
+    .opcion-check {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .opcion-item:has(.opcion-check:checked) {
+        background: #d8e6dc;
+    }
+</style>
+{% endblock %}
