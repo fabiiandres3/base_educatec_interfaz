@@ -1,0 +1,63 @@
+{% extends 'admin/base_admin.html' %}
+<title>{% block title %}Tareas{% endblock %}</title>
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h5 style="color:#f1f5f9;margin:0;">Todas las Tareas</h5>
+        <span style="color:#64748b;font-size:13px;">{{ tareas.count }} registros</span>
+    </div>
+</div>
+
+<div class="mb-4">
+    <a href="{% url 'crear_tarea' %}" class="btn btn-primary">Crear Tarea</a>
+</div>
+
+<div class="admin-table">
+    <table class="table table-dark-custom">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Materia</th>
+                <th>Curso</th>
+                <th>Docente</th>
+                <th>Fecha límite</th>
+                <th>Estado</th>
+                <th>Entregas</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tarea in tareas %}
+            <tr>
+                <td>{{ tarea.titulo }}</td>
+                <td style="color:#64748b;">{{ tarea.clase }}</td>
+                <td><span class="badge-rol badge-alumno">{{ tarea.curso }}</span></td>
+                <td style="color:#64748b;">{{ tarea.docente }}</td>
+                <td style="color:#64748b;">{{ tarea.fecha_entrega|date:"d/m/Y" }}</td>
+                <td><span class="badge-rol badge-{{ t.estado }}">{{ t.get_estado_display }}</span></td>
+                <td style="color:#94a3b8;">{{ t.entregas }}/{{ t.total_estudiantes }}</td>
+                <td>
+
+                    <a href="{% url 'detalle_tarea' tarea.id %}"
+                       class="btn-action btn-info-soft" style="text-decoration:none;">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{% url 'editar_tarea' tarea.id %}"
+                       class="btn-action btn-primary-soft" style="text-decoration:none;">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'eliminar_tarea' tarea.id %}"
+                       class="btn-action btn-danger-soft" style="text-decoration:none;"
+                       onclick="return confirm('¿Eliminar tarea {{ t.titulo }}?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-center" style="color:#475569;padding:40px;">No hay tareas</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

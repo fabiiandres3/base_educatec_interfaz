@@ -1,0 +1,63 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+{% block title %}Crear Tarea{% endblock %}
+
+{% block content %}
+    <h2>Crear Tarea</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ tarea_form.as_p }}
+        <hr>
+
+                <h5>Imágenes</h5>
+
+                <div id="imagenes-container">
+                    <input type="file" name="imagenes" class="form-control mb-2">
+                </div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="agregarImagen()">
+                    + Agregar imagen
+                </button>
+
+                <hr>
+
+                <h5>Archivos</h5>
+
+                <div id="archivos-container">
+                    <input type="file" name="archivos" class="form-control mb-2">
+                </div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="agregarArchivo()">
+                    + Agregar archivo
+                </button>
+
+                <hr>
+
+                <h5>Videos (YouTube, Vimeo, etc.)</h5>
+
+                <div id="videos-container">
+                    <input type="url" name="videos" class="form-control mb-2"
+                        placeholder="https://youtube.com/watch?v=...">
+                </div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="agregarVideo()">
+                    + Agregar video
+                </button>
+
+
+                <div id="preguntas-container"></div>
+
+                <button type="button" class="btn btn-primary mt-3" onclick="agregarPregunta()">
+
+                    + Agregar pregunta
+
+                </button>
+
+                <hr>
+
+        <button type="submit" class="btn btn-primary">Crear Tarea</button>
+        <a href="{% url 'listar_tareas' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+
+    <script src="{% static 'js/tareas/tareas.js' %}"></script>
+{% endblock %}

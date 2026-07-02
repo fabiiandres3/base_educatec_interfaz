@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
+            background: #cfd4de;
             color: #e2e8f0;
             display: flex;
             min-height: 100vh;
@@ -315,8 +315,16 @@
         <a href="{#}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_docentes' %}active{% endif %}">
             <i class="fas fa-chalkboard-teacher"></i> Docentes
         </a>
-        <a href="{#}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_tareas' %}active{% endif %}">
+        <a href="{% url 'listar_tareas' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_tareas' %}active{% endif %}">
             <i class="fas fa-tasks"></i> Tareas
+        </a>
+
+        <a href="{% url 'clases' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_materias' %}active{% endif %}">
+            <i class="fas fa-book"></i> Clases
+        </a>
+
+        <a href="{% url 'listar_cursos' %}" class="nav-link-admin {% if request.resolver_match.url_name == 'admin_cursos' %}active{% endif %}">
+            <i class="fas fa-book"></i> Cursos
         </a>
 
         <div class="nav-section mt-3">Sistema</div>
@@ -326,7 +334,7 @@
     </nav>
 
     <div class="sidebar-footer">
-        <a href="{#}">
+        <a href="{% url 'cerrar_sesion' %}">
             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
         </a>
     </div>
