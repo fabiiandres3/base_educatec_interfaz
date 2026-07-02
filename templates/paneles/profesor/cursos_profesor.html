@@ -1,0 +1,82 @@
+{% extends 'paneles/profesor/base.html' %}
+{% block title %}Mis Grados{% endblock %}
+{% block active_cursos %}active{% endblock %}
+
+{% block content %}
+<div class="topbar">
+  <div class="welcome">
+    <h2>Mis Grados</h2>
+    <p>Grados y estudiantes a tu cargo</p>
+  </div>
+  <div class="user-area">
+    <div class="notification">
+      <i class="fa-solid fa-bell"></i>
+      <span class="notification-count">0</span>
+    </div>
+    <div class="profile">
+      <img src="https://i.pravatar.cc/120?img=3" alt="Profesor Avatar" class="profile-img">
+      <div>
+        <strong>{{ profesor.nombre }}</strong>
+        <small>Profesor</small>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="icon blue"><i class="fa-solid fa-school"></i></div>
+    <h3>{{ cursos|length }}</h3><p>Grados</p>
+  </div>
+  <div class="stat-card">
+    <div class="icon green"><i class="fa-solid fa-users"></i></div>
+    <h3>{{ total_estudiantes }}</h3><p>Estudiantes</p>
+  </div>
+  <div class="stat-card">
+    <div class="icon orange"><i class="fa-solid fa-chart-line"></i></div>
+    <h3>{{ promedio_general|default:"—" }}</h3><p>Promedio</p>
+  </div>
+  <div class="stat-card">
+    <div class="icon purple"><i class="fa-solid fa-book"></i></div>
+    <h3>{{ total_materias }}</h3><p>Materias</p>
+  </div>
+</div>
+
+<div class="section-card">
+  <h4 style="margin:0 0 16px;">Grados Asignados</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>Grado</th>
+        <th>Estudiantes</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for curso in cursos %}
+      <tr>
+        <td><strong>{{ curso.nombre }}</strong></td>
+        <td>{{ curso.estudiantes.count }}</td>
+        <td style="display:flex;gap:8px;">
+          <a href="{% url 'calificaciones_profesor' %}?curso={{ curso.id }}"
+             class="btn-save" style="font-size:13px;padding:7px 14px;">
+            <i class="fa-solid fa-star-half-stroke"></i> Calificaciones
+          </a>
+          <a href="{% url 'asistencia_profesor' %}?curso={{ curso.id }}"
+             class="btn-save" style="font-size:13px;padding:7px 14px;">
+            <i class="fa-solid fa-clipboard-check"></i> Asistencia
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" style="text-align:center;color:#6b7280;padding:30px 0;">
+          No hay grados asignados.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
