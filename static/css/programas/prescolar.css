@@ -1,0 +1,85 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8fbff;
+}
+
+.navbar {
+    background: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, .08);
+}
+
+.hero {
+    background: linear-gradient(135deg, #e8f4ff, #fff7df);
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    color: #1e3c72;
+}
+
+.hero p {
+    font-size: 1.2rem;
+}
+
+.hero img {
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .15);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e3c72;
+}
+
+.card-kid {
+    border: none;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: .3s;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+}
+
+.card-kid:hover {
+    transform: translateY(-10px);
+}
+
+.card-kid img {
+    height: 180px;
+    object-fit: contain;
+    padding: 25px;
+}
+
+.activity-img {
+    height: 280px;
+    object-fit: cover;
+    border-radius: 25px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .12);
+}
+
+.character-card {
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+    transition: .3s;
+}
+
+.character-card:hover {
+    transform: scale(1.05);
+}
+
+.character-card img {
+    height: 220px;
+    object-fit: contain;
+    padding: 20px;
+}
+
+.footer {
+    background: #1e3c72;
+    color: white;
+}
